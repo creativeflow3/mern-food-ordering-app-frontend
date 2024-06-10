@@ -10,7 +10,7 @@ export type User = {
 export type MenuItem = {
   _id: string;
   name: string;
-  price: string;
+  price: number;
 };
 
 export type Restaurant = {
@@ -19,7 +19,7 @@ export type Restaurant = {
   restaurantName: string;
   city: string;
   country: string;
-  deliverPrice: number;
+  deliveryPrice: number;
   estimatedDeliveryTime: number;
   cuisines: string[];
   menuItems: MenuItem[];
