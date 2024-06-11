@@ -6,10 +6,12 @@ import SearchResultInfo from '@/components/SearchResultInfo';
 import SearchResultCard from '@/components/SearchResultsCard';
 import SearchBar, { SearchForm } from '@/components/SearchBar';
 import PaginationSelector from '@/components/PaginationSelector';
+import CuisineFilter from '@/components/CuisineFilter';
 
 export type SearchState = {
   searchQuery: string;
   page: number;
+  selectedCuisines: string[];
 };
 
 const SearchPage = () => {
@@ -17,9 +19,20 @@ const SearchPage = () => {
   const [searchState, setSearchState] = useState<SearchState>({
     searchQuery: '',
     page: 1,
+    selectedCuisines: [],
   });
 
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
   const { results, isLoading } = useSearchRestaurants(searchState, city);
+
+  const setSelectedCuisines = (selectedCuisines: string[]) => {
+    setSearchState((prevState) => ({
+      ...prevState,
+      selectedCuisines,
+      page: 1,
+    }));
+  };
 
   const setPage = (page: number) => {
     setSearchState((prevState) => ({
@@ -54,7 +67,14 @@ const SearchPage = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5">
-      <div id="cuisines-list">insert cuisines here</div>
+      <div id="cuisines-list">
+        <CuisineFilter
+          selectedCuisines={searchState.selectedCuisines}
+          onChange={setSelectedCuisines}
+          isExpanded={isExpanded}
+          onExpandedClick={() => setIsExpanded((prevIsExpanded) => !prevIsExpanded)}
+        />
+      </div>
       <div id="main-content" className="flex flex-col gap-5">
         <SearchBar
           searchQuery={searchState.searchQuery}
@@ -66,7 +86,11 @@ const SearchPage = () => {
         {results.data.map((restaurant) => (
           <SearchResultCard restaurant={restaurant} />
         ))}
-        <PaginationSelector page={results.pagination.page} pages={results.pagination.pages} onPageChange={setPage} />
+        <PaginationSelector
+          page={results.pagination.page}
+          pages={results.pagination.pages}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );
