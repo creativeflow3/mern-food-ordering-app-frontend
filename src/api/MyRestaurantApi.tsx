@@ -54,7 +54,12 @@ export const useCreateMyRestaurant = () => {
     return response.json();
   };
 
-  const { mutate: createRestaurant, isLoading, isSuccess, error } = useMutation(createMyRestaurantRequest);
+  const {
+    mutate: createRestaurant,
+    isLoading,
+    isSuccess,
+    error,
+  } = useMutation(createMyRestaurantRequest);
 
   if (isSuccess) {
     toast.success('Restaurant created!');
@@ -87,7 +92,12 @@ export const useUpdateRestaurant = () => {
     return response.json();
   };
 
-  const { mutate: updateRestaurant, isLoading, isSuccess, error } = useMutation(updateRestaurantRequest);
+  const {
+    mutate: updateRestaurant,
+    isLoading,
+    isSuccess,
+    error,
+  } = useMutation(updateRestaurantRequest);
 
   if (isSuccess) {
     toast.success('Restaurant updated!');
