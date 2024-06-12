@@ -9,6 +9,7 @@ import { Card, CardFooter } from '@/components/ui/card';
 import OrderSummary from '@/components/OrderSummary';
 import { MenuItem as MenuItemType } from '../types';
 import CheckoutButton from '@/components/CheckoutButton';
+import { UserFormData } from '@/forms/user-profile-form/UserProfileForm';
 
 export type CartItem = {
   _id: string;
@@ -21,7 +22,10 @@ const DetailPage = () => {
   const { restaurantId } = useParams();
   const { restaurant, isLoading } = useGetRestaurant(restaurantId);
 
-  const [cartItems, setCartItem] = useState<CartItem[]>([]);
+  const [cartItems, setCartItem] = useState<CartItem[]>(() => {
+    const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   const addToCart = (menuItem: MenuItemType) => {
     setCartItem((prevCartItems) => {
@@ -52,6 +56,11 @@ const DetailPage = () => {
         ];
       }
 
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
+
       return updatedCartItems;
     });
   };
@@ -61,9 +70,17 @@ const DetailPage = () => {
       const updatedCartItems = prevCartItems.filter(
         (item) => cartItem._id !== item._id
       );
+
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
+
       return updatedCartItems;
     });
   };
+
+  const onCheckout = (userFormData: UserFormData) => {};
 
   if (isLoading || !restaurant) {
     return 'loading...';
@@ -97,7 +114,10 @@ const DetailPage = () => {
               removeFromCart={removeFromCart}
             />
             <CardFooter>
-              <CheckoutButton />
+              <CheckoutButton
+                disabled={cartItems.length === 0}
+                onCheckout={onCheckout}
+              />
             </CardFooter>
           </Card>
         </div>

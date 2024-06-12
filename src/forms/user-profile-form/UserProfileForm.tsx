@@ -1,5 +1,13 @@
 import { useEffect } from 'react';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -17,15 +25,23 @@ const formSchema = z.object({
   country: z.string().min(1, 'country is required'),
 });
 
-type UserFormData = z.infer<typeof formSchema>;
+export type UserFormData = z.infer<typeof formSchema>;
 
 type Props = {
   currentUser: User;
   onSave: (userProfileData: UserFormData) => void;
   isLoading: boolean;
+  title?: string;
+  buttonText?: string;
 };
 
-const UserProfileForm = ({ currentUser, onSave, isLoading }: Props) => {
+const UserProfileForm = ({
+  currentUser,
+  onSave,
+  isLoading,
+  title = 'User Profile',
+  buttonText = 'Submit',
+}: Props) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: currentUser,
@@ -37,10 +53,15 @@ const UserProfileForm = ({ currentUser, onSave, isLoading }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSave)} className="space-y-4 bg-gray-50 rounded-lg md:p-10">
+      <form
+        onSubmit={form.handleSubmit(onSave)}
+        className="space-y-4 bg-gray-50 rounded-lg md:p-10"
+      >
         <div>
-          <h2 className="text-2xl font-bold">User Profile form</h2>
-          <FormDescription>View and change your profile information here</FormDescription>
+          <h2 className="text-2xl font-bold">{title}</h2>
+          <FormDescription>
+            View and change your profile information here
+          </FormDescription>
         </div>
         <FormField
           control={form.control}
@@ -108,7 +129,11 @@ const UserProfileForm = ({ currentUser, onSave, isLoading }: Props) => {
             )}
           />
         </div>
-        {isLoading ? <LoadingButton /> : <Button className="bg-orange-500">Submit</Button>}
+        {isLoading ? (
+          <LoadingButton />
+        ) : (
+          <Button className="bg-orange-500">{buttonText}</Button>
+        )}
       </form>
     </Form>
   );
