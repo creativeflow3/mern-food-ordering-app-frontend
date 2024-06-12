@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useGetRestaurant } from '@/api/RestaurantApi';
+import { useCreateCheckoutSession } from '@/api/OrderApi';
+import { Card, CardFooter } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import RestaurantInfo from '@/components/RestaurantInfo';
 import MenuItem from '@/components/MenuItem';
-import { Card, CardFooter } from '@/components/ui/card';
 import OrderSummary from '@/components/OrderSummary';
-import { MenuItem as MenuItemType } from '../types';
 import CheckoutButton from '@/components/CheckoutButton';
 import { UserFormData } from '@/forms/user-profile-form/UserProfileForm';
+import { MenuItem as MenuItemType } from '../types';
 
 export type CartItem = {
   _id: string;
@@ -21,6 +22,8 @@ export type CartItem = {
 const DetailPage = () => {
   const { restaurantId } = useParams();
   const { restaurant, isLoading } = useGetRestaurant(restaurantId);
+  const { createCheckoutSession, isLoading: isCheckoutLoading } =
+    useCreateCheckoutSession();
 
   const [cartItems, setCartItem] = useState<CartItem[]>(() => {
     const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
@@ -80,7 +83,30 @@ const DetailPage = () => {
     });
   };
 
-  const onCheckout = (userFormData: UserFormData) => {};
+  const onCheckout = async (userFormData: UserFormData) => {
+    if (!restaurant) {
+      return;
+    }
+
+    const checkoutData = {
+      cartItems: cartItems.map((cartItem) => ({
+        menuItemId: cartItem._id,
+        name: cartItem.name,
+        quantity: cartItem.quantity.toString(),
+      })),
+      restaurantId: restaurant._id,
+      deliveryDetails: {
+        name: userFormData.name,
+        addressLine1: userFormData.addressLine1,
+        city: userFormData.city,
+        country: userFormData.country,
+        email: userFormData.email as string,
+      },
+    };
+
+    const data = await createCheckoutSession(checkoutData);
+    window.location.href = data.url;
+  };
 
   if (isLoading || !restaurant) {
     return 'loading...';
@@ -117,6 +143,7 @@ const DetailPage = () => {
               <CheckoutButton
                 disabled={cartItems.length === 0}
                 onCheckout={onCheckout}
+                isLoading={isCheckoutLoading}
               />
             </CardFooter>
           </Card>
