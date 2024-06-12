@@ -13,7 +13,12 @@ type Props = {
   onExpandedClick: () => void;
 };
 
-const CuisineFilter = ({ onChange, selectedCuisines, isExpanded, onExpandedClick }: Props) => {
+const CuisineFilter = ({
+  onChange,
+  selectedCuisines,
+  isExpanded,
+  onExpandedClick,
+}: Props) => {
   const handleCuisinesReset = () => onChange([]);
   const handleCuisinesChange = (event: ChangeEvent<HTMLInputElement>) => {
     const clickedCuisine = event.target.value;
@@ -36,29 +41,35 @@ const CuisineFilter = ({ onChange, selectedCuisines, isExpanded, onExpandedClick
         </div>
       </div>
       <div className="space-y-2 flex flex-col">
-        {cuisineList.slice(0, isExpanded ? cuisineList.length : READ_MORE).map((cuisine) => {
-          const isSelected = selectedCuisines.includes(cuisine);
-          return (
-            <div>
-              <input
-                id={`cuisine_${cuisine}`}
-                type="checkbox"
-                className="hidden"
-                value={cuisine}
-                checked={isSelected}
-                onChange={handleCuisinesChange}
-              />
-              <Label
-                htmlFor={`cuisine_${cuisine}`}
-                className={`flex flex-1 items-center cursor-pointer text-sm rounded-full px-4 py-2 font-semibold ${isSelected ? 'border border-green-600 text-green-600' : 'border border-slate-300'}`}
-              >
-                {isSelected && <Check size={20} strokeWidth={3} />}
-                {cuisine}
-              </Label>
-            </div>
-          );
-        })}
-        <Button variant="link" className="mt-4 flex-1" onClick={onExpandedClick}>
+        {cuisineList
+          .slice(0, isExpanded ? cuisineList.length : READ_MORE)
+          .map((cuisine, index) => {
+            const isSelected = selectedCuisines.includes(cuisine);
+            return (
+              <div key={index}>
+                <input
+                  id={`cuisine_${cuisine}`}
+                  type="checkbox"
+                  className="hidden"
+                  value={cuisine}
+                  checked={isSelected}
+                  onChange={handleCuisinesChange}
+                />
+                <Label
+                  htmlFor={`cuisine_${cuisine}`}
+                  className={`flex flex-1 items-center cursor-pointer text-sm rounded-full px-4 py-2 font-semibold ${isSelected ? 'border border-green-600 text-green-600' : 'border border-slate-300'}`}
+                >
+                  {isSelected && <Check size={20} strokeWidth={3} />}
+                  {cuisine}
+                </Label>
+              </div>
+            );
+          })}
+        <Button
+          variant="link"
+          className="mt-4 flex-1"
+          onClick={onExpandedClick}
+        >
           <span className="flex flex-row items-center">
             {isExpanded ? (
               <>

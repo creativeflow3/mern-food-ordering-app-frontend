@@ -28,7 +28,8 @@ const SORT_OPTIONS = [
 
 const SortOptionsDropdown = ({ onChange, sortOption }: Props) => {
   const selectedSortLabel =
-    SORT_OPTIONS.find((option) => option.value === sortOption)?.label || SORT_OPTIONS[0].label;
+    SORT_OPTIONS.find((option) => option.value === sortOption)?.label ||
+    SORT_OPTIONS[0].label;
 
   return (
     <DropdownMenu>
@@ -38,8 +39,12 @@ const SortOptionsDropdown = ({ onChange, sortOption }: Props) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {SORT_OPTIONS.map((option) => (
-          <DropdownMenuItem className="cursor-pointer" onClick={() => onChange(option.value)}>
+        {SORT_OPTIONS.map((option, index) => (
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => onChange(option.value)}
+            key={index}
+          >
             {option.label}
           </DropdownMenuItem>
         ))}
