@@ -2,7 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useMutation, useQuery } from 'react-query';
 import { toast } from 'sonner';
 
-import { Restaurant } from '@/types';
+import { Order, Restaurant } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
