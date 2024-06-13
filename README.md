@@ -1,6 +1,6 @@
 # Food Ordering App
 
-This is an example of a full stack app for ordering food. This is the front end version, the backend version is at https://github.com/creativeflow3/mern-food-ordering-app-backend
+This is an example of a full stack food ordering platform built using the MERN staick. This is the front end version, the backend version written in NodeJS is at https://github.com/creativeflow3/mern-food-ordering-app-backend.
 
 The following tools were used to create this:
 
