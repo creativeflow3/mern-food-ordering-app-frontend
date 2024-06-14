@@ -12,6 +12,7 @@ The following tools were used to create this:
 - Shadcn components for UI
 - React Query for API requests
 - Cloudinary for image uploads
+- Tailwind
 
 # Screenshots
 
