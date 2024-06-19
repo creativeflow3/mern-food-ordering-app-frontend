@@ -4,15 +4,15 @@ This is an example of a full stack food ordering platform built using the MERN s
 
 The following tools were used to create this:
 
-- ReactJS using Vite
-- Auth0 for user authentication
-- Stripe for payment processing
-- MongoDB
-- Render for displaying the menu ordering app
-- Shadcn components for UI
-- React Query for API requests
-- Cloudinary for image uploads
-- Tailwind
+- [ReactJS](https://react.dev/) using [Vite](https://vitejs.dev/guide/)
+- [Auth0](https://auth0.com/) for user authentication
+- [Stripe](https://stripe.com/) for payment processing
+- [MongoDB](https://www.mongodb.com/)
+- [Render](https://render.com/) for displaying the menu ordering app
+- [Shadcn](https://ui.shadcn.com/docs) components for UI
+- [React Query](https://tanstack.com/query/latest/docs/framework/react/overview) for API requests
+- [Cloudinary](https://cloudinary.com/) for image uploads
+- [Tailwind](https://tailwindcss.com/)
 
 # Screenshots
 
